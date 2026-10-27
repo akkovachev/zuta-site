@@ -1,7 +1,8 @@
 :root { --bg:#0b0d12; --card:#12151c; --text:#e8eaf0; --muted:#8b93a7; --accent:#ffb000; }
 * { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; }
+html, body { min-height: 100%; margin: 0; }
 body {
+  min-height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 1.5rem; padding: 1.5rem; color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -20,10 +21,35 @@ body {
 h1 { margin: 0; font-size: clamp(2rem, 8vw, 2.8rem); letter-spacing: -.02em; }
 .alias { margin: .35rem 0 1.25rem; color: var(--muted); font-size: 1.15rem; }
 .alias strong { color: var(--accent); }
-.tagline { margin: 0 0 .5rem; font-size: 1.1rem; }
-.note { margin: 0; color: var(--muted); font-size: .95rem; }
+.tagline { margin: 0 0 1.5rem; font-size: 1.1rem; }
+
+.joke {
+  margin: 0 0 1.5rem; padding: 1.25rem 1.1rem; text-align: left;
+  background: #0e1118; border: 1px solid #1f2430; border-radius: 1rem;
+}
+.joke h2 {
+  margin: 0 0 .75rem; font-size: .75rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
+}
+.setup { margin: 0 0 .5rem; font-size: 1.05rem; line-height: 1.45; }
+.punch { margin: 0 0 1rem; min-height: 1.45em; font-size: 1.05rem; line-height: 1.45; color: var(--accent); font-weight: 600; }
+.joke button {
+  font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer;
+  padding: .55rem 1rem; color: #0b0d12; background: var(--accent);
+  border: 0; border-radius: .6rem;
+}
+.joke button:hover { filter: brightness(1.08); }
+.joke button:disabled { opacity: .6; cursor: default; }
+.joke button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+.counter { margin: 0; color: var(--muted); font-size: .95rem; }
+.counter span[id] { color: var(--text); font-weight: 700; }
+.counter .dot { margin: 0 .35rem; }
 footer { color: var(--muted); font-size: .85rem; }
+
 @media (prefers-reduced-motion: no-preference) {
   .card { animation: rise .6s ease-out both; }
+  .joke.pop .setup, .joke.pop .punch { animation: fade .45s ease-out both; }
   @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 }

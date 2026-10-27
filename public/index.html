@@ -15,9 +15,21 @@
     <h1>Kaloyan</h1>
     <p class="alias">aka <strong>Zuta</strong></p>
     <p class="tagline">Welcome to my corner of the internet.</p>
-    <p class="note">This page is just getting started. More coming soon.</p>
+
+    <section id="joke" class="joke" aria-live="polite">
+      <h2>Joke of the visit</h2>
+      <p id="joke-setup" class="setup">Loading a joke&hellip;</p>
+      <p id="joke-punch" class="punch"></p>
+      <button id="joke-btn" type="button">Another one</button>
+    </section>
+
+    <p class="counter">
+      <span id="visitors">&ndash;</span> visitors
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span id="views">&ndash;</span> page views
+    </p>
   </main>
   <footer>&copy; <span id="y">2026</span> Kaloyan &ldquo;Zuta&rdquo;</footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script src="app.js"></script>
 </body>
 </html>

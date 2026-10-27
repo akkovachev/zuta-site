@@ -6,3 +6,8 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:8480:8080"
+    volumes:
+      - zuta-data:/data
+
+volumes:
+  zuta-data:
