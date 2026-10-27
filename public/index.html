@@ -10,17 +10,77 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="bg" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+    <span class="star s1"></span><span class="star s2"></span><span class="star s3"></span>
+    <span class="star s4"></span><span class="star s5"></span><span class="star s6"></span>
+  </div>
+
   <main class="card">
     <div class="mark" aria-hidden="true">Z</div>
     <h1>Kaloyan</h1>
-    <p class="alias">aka <strong>Zuta</strong></p>
+    <p class="alias">aka <strong class="shine">Zuta</strong></p>
     <p class="tagline">Welcome to my corner of the internet.</p>
 
-    <section id="joke" class="joke" aria-live="polite">
-      <h2>Joke of the visit</h2>
-      <p id="joke-setup" class="setup">Loading a joke&hellip;</p>
-      <p id="joke-punch" class="punch"></p>
-      <button id="joke-btn" type="button">Another one</button>
+    <section id="joke" class="stage" aria-label="Joke of the visit">
+      <div class="mascot-wrap">
+        <div id="confetti" class="confetti" aria-hidden="true"></div>
+        <svg id="mascot" class="mascot idle" viewBox="0 0 160 176" role="img" aria-label="Cartoon character telling a joke">
+          <ellipse class="shadow" cx="80" cy="170" rx="46" ry="5" fill="#000" opacity=".35"/>
+
+          <g class="body">
+            <path d="M24 176 Q24 124 80 120 Q136 124 136 176 Z" fill="#ffb000"/>
+            <path d="M64 124 Q80 140 96 124" fill="none" stroke="#c98a00" stroke-width="4" stroke-linecap="round"/>
+            <path d="M72 142 v14 M88 142 v14" stroke="#c98a00" stroke-width="3" stroke-linecap="round"/>
+            <path d="M62 152 h22 l-22 16 h22" fill="none" stroke="#0b0d12" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" transform="translate(-3 -2) scale(.9)"/>
+            <rect x="68" y="104" width="24" height="22" rx="8" fill="#e9b88c"/>
+          </g>
+
+          <g class="head">
+            <circle cx="41" cy="78" r="8" fill="#f1c294"/>
+            <circle cx="119" cy="78" r="8" fill="#f1c294"/>
+            <circle cx="80" cy="74" r="41" fill="#f6cfa6"/>
+            <path d="M38 70 Q34 26 80 24 Q126 26 122 70 Q112 50 100 54 Q92 38 78 50 Q62 40 52 56 Q42 56 38 70 Z" fill="#2a2f3d"/>
+            <path d="M52 36 l-6 -12 l14 8 M80 26 l2 -14 l8 14 M104 32 l10 -10 l-2 16" fill="#2a2f3d" stroke="#2a2f3d" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+
+            <ellipse cx="54" cy="92" rx="8" ry="5" fill="#ff8f8f" opacity=".45"/>
+            <ellipse cx="106" cy="92" rx="8" ry="5" fill="#ff8f8f" opacity=".45"/>
+
+            <g class="brow brow-l"><path d="M56 62 Q66 56 76 62" fill="none" stroke="#2a2f3d" stroke-width="4" stroke-linecap="round"/></g>
+            <g class="brow brow-r"><path d="M84 62 Q94 56 104 62" fill="none" stroke="#2a2f3d" stroke-width="4" stroke-linecap="round"/></g>
+
+            <g class="eyes-open">
+              <g class="eye"><ellipse cx="66" cy="77" rx="8" ry="9" fill="#fff"/><circle class="pupil" cx="66" cy="78" r="4" fill="#1b1f2b"/><circle cx="64.5" cy="75.5" r="1.4" fill="#fff"/></g>
+              <g class="eye"><ellipse cx="94" cy="77" rx="8" ry="9" fill="#fff"/><circle class="pupil" cx="94" cy="78" r="4" fill="#1b1f2b"/><circle cx="92.5" cy="75.5" r="1.4" fill="#fff"/></g>
+            </g>
+            <g class="eyes-happy">
+              <path d="M57 80 Q66 68 75 80" fill="none" stroke="#1b1f2b" stroke-width="4.5" stroke-linecap="round"/>
+              <path d="M85 80 Q94 68 103 80" fill="none" stroke="#1b1f2b" stroke-width="4.5" stroke-linecap="round"/>
+            </g>
+
+            <path d="M78 84 Q80 92 84 91" fill="none" stroke="#d99c70" stroke-width="3" stroke-linecap="round"/>
+
+            <path class="mouth mouth-idle" d="M62 98 Q80 114 98 98" fill="none" stroke="#1b1f2b" stroke-width="4" stroke-linecap="round"/>
+            <path class="mouth mouth-think" d="M70 103 Q76 99 82 103 T92 101" fill="none" stroke="#1b1f2b" stroke-width="4" stroke-linecap="round"/>
+            <g class="mouth mouth-laugh">
+              <path d="M58 94 Q80 128 102 94 Z" fill="#7a1f2b" stroke="#1b1f2b" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M66 112 Q80 100 94 112 Q80 124 66 112 Z" fill="#ff7b8a"/>
+              <path d="M62 95 h36" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <path class="tear tear-l" d="M55 84 q-4 8 0 11 q4 -3 0 -11 Z" fill="#7fd0ff"/>
+            <path class="tear tear-r" d="M105 84 q-4 8 0 11 q4 -3 0 -11 Z" fill="#7fd0ff"/>
+          </g>
+        </svg>
+        <div id="prop" class="prop" aria-hidden="true"></div>
+      </div>
+
+      <div class="bubble" aria-live="polite">
+        <h2>Joke of the visit</h2>
+        <p id="joke-setup" class="setup">Loading a joke&hellip;</p>
+        <p id="joke-punch" class="punch"></p>
+        <button id="joke-btn" type="button">Another one</button>
+      </div>
     </section>
 
     <p class="counter">

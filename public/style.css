@@ -1,55 +1,186 @@
-:root { --bg:#0b0d12; --card:#12151c; --text:#e8eaf0; --muted:#8b93a7; --accent:#ffb000; }
+:root { --bg:#0b0d12; --card:#12151c; --text:#e8eaf0; --muted:#8b93a7; --accent:#ffb000; --line:#1f2430; }
 * { box-sizing: border-box; }
 html, body { min-height: 100%; margin: 0; }
 body {
-  min-height: 100vh;
+  min-height: 100vh; position: relative; overflow-x: hidden;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 1.5rem; padding: 1.5rem; color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: radial-gradient(1200px 600px at 50% -10%, #1b2030 0%, var(--bg) 60%);
 }
+
+/* ---------- animated background ---------- */
+.bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.blob { position: absolute; width: 34rem; height: 34rem; border-radius: 50%; filter: blur(70px); opacity: .32; }
+.b1 { left: -10rem; top: -8rem; background: radial-gradient(circle, #ffb000 0%, transparent 65%); }
+.b2 { right: -12rem; top: 30%; background: radial-gradient(circle, #5b6cff 0%, transparent 65%); opacity: .26; }
+.b3 { left: 25%; bottom: -16rem; background: radial-gradient(circle, #ff5fa2 0%, transparent 65%); opacity: .2; }
+.star { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff; opacity: .5; }
+.s1 { left: 12%; top: 18%; } .s2 { left: 82%; top: 12%; } .s3 { left: 70%; top: 78%; }
+.s4 { left: 8%; top: 70%; }  .s5 { left: 46%; top: 8%; }  .s6 { left: 92%; top: 52%; }
+
+/* ---------- card ---------- */
 .card {
-  width: min(92vw, 30rem); padding: 2.5rem 2rem; text-align: center;
-  background: var(--card); border: 1px solid #1f2430; border-radius: 1.25rem;
-  box-shadow: 0 20px 60px rgba(0,0,0,.45);
+  position: relative; z-index: 1;
+  width: min(94vw, 36rem); padding: 2.5rem 2rem 2rem; text-align: center;
+  background: rgba(18,21,28,.88); border: 1px solid var(--line); border-radius: 1.25rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,.45); backdrop-filter: blur(6px);
 }
+footer { position: relative; z-index: 1; color: var(--muted); font-size: .85rem; }
+
 .mark {
   width: 4.5rem; height: 4.5rem; margin: 0 auto 1.25rem; display: grid; place-items: center;
   font-size: 2.4rem; font-weight: 800; color: #0b0d12; background: var(--accent);
-  border-radius: 1.1rem; transform: rotate(-6deg);
+  border-radius: 1.1rem; transform: rotate(-6deg); cursor: default;
 }
 h1 { margin: 0; font-size: clamp(2rem, 8vw, 2.8rem); letter-spacing: -.02em; }
 .alias { margin: .35rem 0 1.25rem; color: var(--muted); font-size: 1.15rem; }
 .alias strong { color: var(--accent); }
+.shine {
+  background: linear-gradient(90deg, #ffb000 0%, #fff0b3 50%, #ffb000 100%);
+  background-size: 200% 100%; -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
 .tagline { margin: 0 0 1.5rem; font-size: 1.1rem; }
 
-.joke {
-  margin: 0 0 1.5rem; padding: 1.25rem 1.1rem; text-align: left;
-  background: #0e1118; border: 1px solid #1f2430; border-radius: 1rem;
+/* ---------- joke stage: mascot + speech bubble ---------- */
+.stage {
+  display: flex; align-items: center; gap: 1.1rem; margin: 0 0 1.5rem; padding: 1.1rem;
+  text-align: left; background: #0e1118; border: 1px solid var(--line); border-radius: 1rem;
 }
-.joke h2 {
-  margin: 0 0 .75rem; font-size: .75rem; font-weight: 700;
+.mascot-wrap { position: relative; flex: 0 0 8.5rem; width: 8.5rem; }
+.mascot { display: block; width: 100%; height: auto; overflow: visible; transform-origin: 50% 100%; }
+.mascot * { transform-box: fill-box; transform-origin: center; }
+.mascot .head { transform-box: view-box; transform-origin: 80px 118px; }
+
+.eyes-happy, .mouth-think, .mouth-laugh, .tear { display: none; }
+.think .mouth-idle, .laugh .mouth-idle { display: none; }
+.think .mouth-think { display: block; }
+.laugh .eyes-open { display: none; }
+.laugh .eyes-happy, .laugh .mouth-laugh, .laugh .tear { display: block; }
+.think .head { transform: rotate(-6deg); }
+.think .brow-l { transform: translateY(-6px) rotate(-12deg); }
+.think .pupil { transform: translate(-2.5px, -3px); }
+.laugh .brow { transform: translateY(-5px); }
+
+.prop {
+  position: absolute; right: -.6rem; top: -.4rem; width: 3rem; height: 3rem;
+  display: grid; place-items: center; font-size: 1.7rem; line-height: 1;
+  background: #1a1f2b; border: 2px solid var(--accent); border-radius: 50%;
+  opacity: 0; transform: scale(0);
+}
+.prop.show { opacity: 1; transform: scale(1); }
+
+.bubble {
+  position: relative; flex: 1; min-width: 0; min-height: 12.5rem; padding: 1rem 1.1rem;
+  display: flex; flex-direction: column; align-items: flex-start;
+  background: #171c27; border: 1px solid #262d3c; border-radius: 1rem;
+}
+.bubble::before {
+  content: ""; position: absolute; left: -.55rem; top: 50%; width: 1rem; height: 1rem;
+  background: #171c27; border-left: 1px solid #262d3c; border-bottom: 1px solid #262d3c;
+  transform: translateY(-50%) rotate(45deg);
+}
+.bubble h2 {
+  margin: 0 0 .6rem; font-size: .72rem; font-weight: 700;
   letter-spacing: .12em; text-transform: uppercase; color: var(--accent);
 }
-.setup { margin: 0 0 .5rem; font-size: 1.05rem; line-height: 1.45; }
-.punch { margin: 0 0 1rem; min-height: 1.45em; font-size: 1.05rem; line-height: 1.45; color: var(--accent); font-weight: 600; }
-.joke button {
+.setup { margin: 0 0 .5rem; min-height: 1.45em; font-size: 1.05rem; line-height: 1.45; }
+.punch { margin: 0 0 .9rem; min-height: 1.45em; font-size: 1.05rem; line-height: 1.45; color: var(--accent); font-weight: 600; }
+.punch.thinking::before { content: "\2022\2022\2022"; letter-spacing: .25em; color: var(--muted); }
+.setup.typing::after { content: "\258D"; color: var(--accent); margin-left: 1px; }
+.bubble button {
+  margin-top: auto;
   font: inherit; font-size: .9rem; font-weight: 600; cursor: pointer;
   padding: .55rem 1rem; color: #0b0d12; background: var(--accent);
   border: 0; border-radius: .6rem;
 }
-.joke button:hover { filter: brightness(1.08); }
-.joke button:disabled { opacity: .6; cursor: default; }
-.joke button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.bubble button:hover { filter: brightness(1.08); }
+.bubble button:disabled { opacity: .6; cursor: default; }
+.bubble button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+/* confetti + "HA" bursts (elements are created by app.js) */
+.confetti { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 2; }
+.piece { position: absolute; left: 50%; top: 35%; width: 7px; height: 11px; border-radius: 2px; background: var(--c, #ffb000); opacity: 0; }
+.ha { position: absolute; left: 50%; top: 20%; font-weight: 800; font-size: 1rem; color: var(--accent); opacity: 0; white-space: nowrap; }
 
 .counter { margin: 0; color: var(--muted); font-size: .95rem; }
-.counter span[id] { color: var(--text); font-weight: 700; }
+.counter span[id] { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
 .counter .dot { margin: 0 .35rem; }
-footer { color: var(--muted); font-size: .85rem; }
 
+@media (max-width: 30rem) {
+  .card { padding: 2rem 1.1rem 1.5rem; }
+  .stage { flex-direction: column; text-align: left; }
+  .mascot-wrap { flex-basis: auto; width: 8rem; }
+  .bubble { width: 100%; min-height: 11rem; }
+  .bubble::before { left: 50%; top: -.55rem; transform: translateX(-50%) rotate(135deg); }
+}
+
+/* ---------- motion (only when the visitor hasn't asked for less) ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .card { animation: rise .6s ease-out both; }
-  .joke.pop .setup, .joke.pop .punch { animation: fade .45s ease-out both; }
-  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-  @keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .blob { animation: drift 22s ease-in-out infinite alternate; }
+  .b2 { animation-duration: 28s; animation-delay: -6s; }
+  .b3 { animation-duration: 25s; animation-delay: -12s; }
+  .star { animation: twinkle 3.4s ease-in-out infinite; }
+  .s2 { animation-delay: -.6s; } .s3 { animation-delay: -1.2s; } .s4 { animation-delay: -1.9s; }
+  .s5 { animation-delay: -2.4s; } .s6 { animation-delay: -3s; }
+
+  .card { animation: cardIn .7s cubic-bezier(.2,.8,.2,1) both; }
+  .card > * { animation: rise .6s ease-out both; }
+  .card > :nth-child(1) { animation: markIn .8s cubic-bezier(.34,1.56,.64,1) .1s both, floaty 5s ease-in-out 1s infinite; }
+  .card > :nth-child(2) { animation-delay: .2s; }
+  .card > :nth-child(3) { animation-delay: .3s; }
+  .card > :nth-child(4) { animation-delay: .4s; }
+  .card > :nth-child(5) { animation-delay: .55s; }
+  .card > :nth-child(6) { animation-delay: .7s; }
+  .mark:hover { animation: wobble .6s ease-in-out; }
+  .shine { animation: shimmer 3.5s linear infinite; }
+
+  .idle .head { animation: bob 3.2s ease-in-out infinite; }
+  .idle .body { animation: breathe 3.2s ease-in-out infinite; }
+  .idle .eye { animation: blink 4.6s infinite; }
+  .think .head { transition: transform .3s ease; }
+  .think .pupil { animation: look 1.4s ease-in-out infinite alternate; }
+  .laugh { animation: laughShake .34s ease-in-out infinite; }
+  .laugh .tear { animation: tearDrop .8s ease-in infinite; }
+  .laugh .tear-r { animation-delay: .25s; }
+
+  .prop.show { animation: popIn .55s cubic-bezier(.34,1.56,.64,1) both, propFloat 2.6s ease-in-out .6s infinite; }
+  .punch.reveal { animation: punchPop .55s cubic-bezier(.34,1.56,.64,1) both; }
+  .setup.typing::after { animation: caret .7s steps(1) infinite; }
+  .punch.thinking::before { animation: dots 1s ease-in-out infinite; }
+  .piece { animation: fly 1.15s cubic-bezier(.2,.7,.3,1) forwards; }
+  .ha { animation: haRise 1.2s ease-out forwards; }
+  .bubble button { transition: transform .15s ease, filter .15s ease; }
+  .bubble button:hover:not(:disabled) { transform: translateY(-2px) scale(1.04); }
+  .bubble button:active:not(:disabled) { transform: scale(.96); }
+
+  @keyframes drift { from { transform: translate(0, 0) scale(1); } to { transform: translate(5rem, 4rem) scale(1.15); } }
+  @keyframes twinkle { 0%, 100% { opacity: .15; transform: scale(.7); } 50% { opacity: .9; transform: scale(1.4); } }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes markIn { from { opacity: 0; transform: translateY(-20px) rotate(-40deg) scale(.4); } to { opacity: 1; transform: rotate(-6deg); } }
+  @keyframes floaty { 0%, 100% { transform: rotate(-6deg) translateY(0); } 50% { transform: rotate(-3deg) translateY(-5px); } }
+  @keyframes wobble { 0%, 100% { transform: rotate(-6deg); } 25% { transform: rotate(8deg) scale(1.08); } 50% { transform: rotate(-14deg) scale(1.08); } 75% { transform: rotate(4deg); } }
+  @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.015); } }
+  @keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
+  @keyframes look { from { transform: translate(-3px, -3px); } to { transform: translate(2px, -4px); } }
+  @keyframes laughShake { 0%, 100% { transform: rotate(-2.5deg) translateY(0); } 50% { transform: rotate(2.5deg) translateY(-4px); } }
+  @keyframes tearDrop { 0% { opacity: 0; transform: translateY(-4px); } 25% { opacity: 1; } 100% { opacity: 0; transform: translateY(16px); } }
+  @keyframes popIn { from { opacity: 0; transform: scale(0) rotate(-40deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+  @keyframes propFloat { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-5px) rotate(5deg); } }
+  @keyframes punchPop { 0% { opacity: 0; transform: scale(.6) translateY(8px); } 100% { opacity: 1; transform: none; } }
+  @keyframes caret { 50% { opacity: 0; } }
+  @keyframes dots { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+  @keyframes fly {
+    0% { opacity: 1; transform: translate(0, 0) rotate(0); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
+  }
+  @keyframes haRise {
+    0% { opacity: 0; transform: translate(var(--hx), 0) scale(.5) rotate(var(--hr)); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--hx), -3.2rem) scale(1.3) rotate(var(--hr)); }
+  }
 }

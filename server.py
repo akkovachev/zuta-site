@@ -117,7 +117,7 @@ class Handler(BaseHTTPRequestHandler):
             except ValueError:
                 last = None
             idx, joke = pick_joke(last)
-            return self._json(200, {"id": idx, "setup": joke[0], "punchline": joke[1]})
+            return self._json(200, {"id": idx, "setup": joke[0], "punchline": joke[1], "emoji": joke[2]})
         if path == "/api/count":
             with _lock:
                 return self._json(200, _load())
